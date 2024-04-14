@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payloads, label }: any) => {
 
 interface ForecastChartProps {
   dataKey: dataKeyEnum;
-  requestedData: PredictiHttpResult | null;
+  requestedData: PredictiHttpResult[] | null;
   viewSettings: ViewSettingsType;
   title: string;
   text: string;

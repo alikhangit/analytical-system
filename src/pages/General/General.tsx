@@ -24,7 +24,7 @@ const General = () => {
   const onFinish = async (values: Record<string, number>) => {
     setIsLoading(true);
     api
-      .predict(values, viewSettings.mode)
+      .predict({ ...values, user_id: 0 }, viewSettings.mode)
       .then((data) => {
         if (data) {
           messageApi.open({

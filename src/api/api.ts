@@ -9,7 +9,10 @@ class Api {
 
   async predict(params: Record<string, number>, endpoint: string): Promise<PredictiHttpResult | undefined> {
     try {
-      const paramsPattern = Object.keys(params).map((param) => [param, params[param].toString()]);
+      const paramsPattern = Object.keys(params).map((param) => {
+        return [param, params[param] ? params[param].toString() : (Math.floor(Math.random() * 6) + 5).toString()];
+      });
+
       const queryParams = new URLSearchParams(paramsPattern);
 
       const response = await fetch(`${this.apiURL}/${endpoint}/?${queryParams.toString()}`, {

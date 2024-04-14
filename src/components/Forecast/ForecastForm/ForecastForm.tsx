@@ -6,9 +6,13 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { PredictiHttpResult } from "../../../api/api.types";
 import ViewManager from "../../ViewManager/ViewManager";
 import { ViewSettingsType } from "../../../pages/General/General";
+import { selectData } from "../../../pages/mockText/selectData";
+import { api } from "../../../api/api";
+import { useContext, useEffect } from "react";
+import { ModalContext } from "../../../App";
 
 enum ForecastFormFields {
-  userId = "userId",
+  userId = "user_id",
   val1_infl = "val1_infl",
   val2_bez = "val2_bez",
   val3_klst = "val3_klst",
@@ -16,8 +20,7 @@ enum ForecastFormFields {
 }
 
 const required = {
-  required: true,
-  message: "Введите значение",
+  required: false,
 };
 
 interface ForecastFormProps {
@@ -33,6 +36,7 @@ const ForecastForm = observer(
   ({ data, setData, onFinish, setViewSettings, viewSettings, isIndividualForm = false }: ForecastFormProps) => {
     const [form] = Form.useForm();
     const userId = Form.useWatch(ForecastFormFields.userId, form);
+    const open = useContext(ModalContext);
 
     const onClick = () => {
       forecastStore.increaseState();
@@ -51,6 +55,11 @@ const ForecastForm = observer(
         return Promise.resolve();
       }
     };
+
+    useEffect(() => {
+      api.predict(form.getFieldsValue(), viewSettings.mode);
+    }, [open]);
+
     return (
       <>
         <Form layout="vertical" form={form} onFinish={onFinish}>
@@ -79,8 +88,9 @@ const ForecastForm = observer(
                   ]}
                 >
                   <Select placeholder="Выберете ID клиента" className="form__select">
-                    <Select.Option value="17483729084723">17483729084723</Select.Option>
-                    <Select.Option value="473585703434">473585703434</Select.Option>
+                    {selectData.map((item) => (
+                      <Select.Option value={item}>{item}</Select.Option>
+                    ))}
                   </Select>
                 </Form.Item>
               </Space>

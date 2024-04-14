@@ -6,7 +6,7 @@ import { Content } from "antd/es/layout/layout";
 import { ReactComponent as GeneralIcon } from "./icons/generalIcon.svg";
 import { ReactComponent as IndividualIcon } from "./icons/individualIcon.svg";
 import { ReactComponent as TopIcon } from "./icons/topIcon.svg";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.scss";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import Avatar from "./components/Avatar/Avatar";
@@ -15,6 +15,8 @@ import Individual from "./pages/Individual/Individual";
 import TopModal from "./components/TopModal/TopModal";
 
 export type ActiveKeyType = UrlEnum | "top";
+
+export const ModalContext = createContext(false);
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -76,16 +78,18 @@ const App = () => {
             }}
           />
         </Sider>
-        <Layout>
-          <Content className="content" id="content">
-            <TopModal open={open} setOpen={setOpen} setActiveKey={setActiveKey} />
-            <Routes>
-              <Route path={UrlEnum.general} element={<General />} />
-              <Route path={UrlEnum.individual} element={<Individual />} />
-              <Route path={"/*"} element={<General />} />
-            </Routes>
-          </Content>
-        </Layout>
+        <ModalContext.Provider value={open}>
+          <Layout>
+            <Content className="content" id="content">
+              <TopModal open={open} setOpen={setOpen} setActiveKey={setActiveKey} />
+              <Routes>
+                <Route path={UrlEnum.general} element={<General />} />
+                <Route path={UrlEnum.individual} element={<Individual />} />
+                <Route path={"/*"} element={<General />} />
+              </Routes>
+            </Content>
+          </Layout>
+        </ModalContext.Provider>
       </Layout>
     </main>
   );
