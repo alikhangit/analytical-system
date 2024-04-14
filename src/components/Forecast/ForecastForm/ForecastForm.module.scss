@@ -1,0 +1,18 @@
+.form {
+  display: flex;
+  gap: 80px;
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__input {
+    width: 150px;
+  }
+
+  &__select {
+    width: 210px;
+  }
+}
